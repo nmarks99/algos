@@ -38,7 +38,6 @@ fn partition(v: &mut Vec<i64>, left: usize, right:usize) -> usize {
 
 fn quicksort_recursive(v: &mut Vec<i64>, left: usize, right:usize) {
     
-    println!("left, right = {},{}", left, right);
     if left < right {
         let partition_index: usize = partition(v, left, right); 
         let right_tmp: usize;
@@ -58,6 +57,17 @@ fn quicksort_recursive(v: &mut Vec<i64>, left: usize, right:usize) {
 
 pub fn quicksort(v: &mut Vec<i64>) {
     quicksort_recursive(v, 0, v.len() - 1);
+}
+
+pub fn bubblesort(v: &mut Vec<i64>) {
+    let n = v.len();
+    for i in 0..n {
+        for j in 0..(n-i-1) {
+            if v[j] > v[j+1] {
+                swap(v, j, j+1);
+            }
+        }
+    }
 }
 
 
@@ -90,11 +100,17 @@ mod tests {
         quicksort(&mut v3);
         assert_eq!(v3,v3_correct);
 
+        let mut v4 = vec![3, 4, -2, -14];
+        let v4_correct = vec![-14,-2,3,4];
+        quicksort(&mut v4);
+        assert_eq!(v4,v4_correct);
     }
 
     #[test]
-    fn test_quicksort_issue() {
-        let mut v3 = vec![3, 4, -2, -14];
-        quicksort(&mut v3);
+    fn test_bubblesort() {
+        let mut v = vec![5,4,3,2,1];
+        let v_correct = vec![1,2,3,4,5];
+        bubblesort(&mut v);
+        assert_eq!(v, v_correct);
     }
 }
