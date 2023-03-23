@@ -41,14 +41,18 @@ fn quicksort_recursive(v: &mut Vec<i64>, left: usize, right:usize) {
     println!("left, right = {},{}", left, right);
     if left < right {
         let partition_index: usize = partition(v, left, right); 
+        let right_tmp: usize;
+
         if partition_index == 0 {
-            quicksort_recursive(v, left, v.len()-1);
+            right_tmp = v.len() - 2;
         }
-        else
-        {
-            quicksort_recursive(v, left, partition_index - 1);
+        else {
+            right_tmp = partition_index - 1;
         }
-        quicksort_recursive(v, partition_index + 1, right);
+
+        let left_tmp = partition_index + 1;
+        quicksort_recursive(v, left, right_tmp);
+        quicksort_recursive(v, left_tmp, right);
     }
 }
 
