@@ -35,19 +35,24 @@ fn partition(v: &mut Vec<i64>, left: usize, right:usize) -> usize {
     return i;
 }
 
-pub fn quicksort(v: &mut Vec<i64>, left: usize, right:usize) {
+
+fn quicksort_recursive(v: &mut Vec<i64>, left: usize, right:usize) {
     
     if left < right {
         let partition_index: usize = partition(v, left, right); 
         if partition_index == 0 {
-            quicksort(v, left, v.len()-1);
+            quicksort_recursive(v, left, v.len()-1);
         }
         else
         {
-            quicksort(v, left, partition_index - 1);
+            quicksort_recursive(v, left, partition_index - 1);
         }
-        quicksort(v, partition_index + 1, right);
+        quicksort_recursive(v, partition_index + 1, right);
     }
+}
+
+pub fn quicksort(v: &mut Vec<i64>) {
+    quicksort_recursive(v, 0, v.len() - 1);
 }
 
 
@@ -65,21 +70,18 @@ mod tests {
     #[test]
     fn test_quicksort() {
         let mut v1 = vec![5,4,3,2,1];
-        let len1 = v1.len();
         let v1_correct = vec![1,2,3,4,5];
-        quicksort(&mut v1, 0, len1 - 1);
+        quicksort(&mut v1);
         assert_eq!(v1, v1_correct);
 
         let mut v2 = vec![5,4,-3,2,1];
-        let len2 = v2.len();
         let v2_correct = vec![-3,1,2,4,5];
-        quicksort(&mut v2, 0, len2 - 1);
+        quicksort(&mut v2);
         assert_eq!(v2,v2_correct);
 
         let mut v3 = vec![3, 4, -2, -14, 5, 2, 5, 3, -53];
-        let len3 = v3.len();
         let v3_correct = vec![-53, -14, -2, 2, 3, 3, 4, 5, 5];
-        quicksort(&mut v3, 0, len3 - 1);
+        quicksort(&mut v3);
         assert_eq!(v3,v3_correct);
     }
 }
