@@ -12,9 +12,6 @@ fn partition(v: &mut Vec<i64>, left: usize, right:usize) -> usize {
     let mut i = left;
     let mut j = right - 1;
     let pivot = v[right]; // let last element be pivot
-    // println!("i = {}",i);
-    // println!("j = {}",j);
-    // println!("right = {}",right);
     
     // i moves right, j moves left until i and j cross
     while i < j {
