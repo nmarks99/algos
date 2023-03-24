@@ -7,56 +7,34 @@ fn swap(v: &mut Vec<i64>, i: usize, j: usize) {
     v[j] = vi;
 }
 
-fn partition(v: &mut Vec<i64>, left: usize, right:usize) -> usize {
-
-    let mut i = left;
-    let mut j = right - 1;
-    let pivot = v[right]; // let last element be pivot
+fn partition(v: &mut Vec<i64>, left: i32, right:i32) -> i32 {
     
-    // i moves right, j moves left until i and j cross
-    while i < j {
-        while i < right && v[i] < pivot {
+    let pivot = v[right as usize]; // let last element be pivot
+    let mut i: i32 = left - 1;
+
+    for j in left..right {
+        if v[j as usize] < pivot {
             i += 1;
-        }
-
-        while j > left && v[j] >= pivot {
-            j -= 1;
-        }
-
-        if i < j {
-            swap(v, i, j);
+            swap(v,i.try_into().unwrap(),j.try_into().unwrap());
         }
     }
+    swap(v, (i+1).try_into().unwrap(), right.try_into().unwrap());
     
-    if v[i] > pivot {
-        swap(v, i, right);
-    }
-    
-    return i;
+    return (i + 1).try_into().unwrap();
 }
 
 
-fn quicksort_recursive(v: &mut Vec<i64>, left: usize, right:usize) {
+fn _quicksort(v: &mut Vec<i64>, left: i32, right:i32) {
     
     if left < right {
-        let partition_index: usize = partition(v, left, right); 
-        let right_tmp: usize;
-
-        if partition_index == 0 {
-            right_tmp = v.len() - 2;
-        }
-        else {
-            right_tmp = partition_index - 1;
-        }
-
-        let left_tmp = partition_index + 1;
-        quicksort_recursive(v, left, right_tmp);
-        quicksort_recursive(v, left_tmp, right);
+        let partition_index: i32 = partition(v, left, right); 
+        _quicksort(v, left, partition_index - 1);
+        _quicksort(v, partition_index + 1, right);
     }
 }
 
 pub fn quicksort(v: &mut Vec<i64>) {
-    quicksort_recursive(v, 0, v.len() - 1);
+    _quicksort(v, 0, (v.len() - 1) as i32);
 }
 
 pub fn bubblesort(v: &mut Vec<i64>) {
