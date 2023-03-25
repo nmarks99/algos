@@ -23,8 +23,13 @@ where
         else if sorted_arr[m] > target_val {
             right = m as i32 - 1; 
         }
-        else {
-            return Some(m);
+        else { // sorted_arr[m] == target
+            if m > 0 && sorted_arr[m-1] == sorted_arr[m]{
+                right = m as i32 - 1;
+            }
+            else {
+                return Some(m);
+            }
         }
     }
 
@@ -76,8 +81,7 @@ mod tests {
             let mut rng = rand::thread_rng();
             let target_val = v[rng.gen_range(0..10)];
             let ind = binary_search(&v, target_val);
-            assert_eq!(target_val, v[ind.unwrap()]);
-            // assert_eq!(ind.unwrap(), v.iter().position(|&r| r == target_val).unwrap());
+            assert_eq!(ind.unwrap(), v.iter().position(|&r| r == target_val).unwrap());
         }
     }
 
