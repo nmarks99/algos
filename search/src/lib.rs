@@ -1,6 +1,7 @@
+
 pub fn binary_search<T>(sorted_arr: &[T], target_val: T) -> Option<usize>
 where
-    T: PartialOrd + Copy + Default,
+    T: PartialOrd + Copy,
 { 
     
     // number of elements in the array
@@ -12,7 +13,7 @@ where
     let mut right: i32 = n - 1;
     
     // if left > right, failed to find the target value, return None
-    while left < right {
+    while left <= right {
 
         let m = ((left + right) as f64/ 2.0).floor() as usize;
 
@@ -26,8 +27,8 @@ where
             return Some(m);
         }
     }
-    None
 
+    None
 
 }
 
@@ -51,6 +52,36 @@ mod tests {
     fn test_binary_search_not_found() {
         let v: Vec<i8> = vec![1,2,3,4,5];
         let ind = binary_search(&v, 7);
-        assert_eq!(ind, None);
+        assert!(ind.is_none());
     }
+
+
+    #[test]
+    fn test_binary_search_random() {
+        
+        use rand::{distributions::Uniform, Rng};
+
+        // Fills a vector with n random values between min_rand and max_rand
+        fn gen_random_vec(n: usize, min_rand: i64, max_rand: i64) -> Vec<i64> {
+            let mut rng = rand::thread_rng();
+            let range = Uniform::new(min_rand,max_rand+1);
+            let n: i64 = (n/2) as i64;
+            let arr: Vec<i64> = (-n..n).map(|_| rng.sample(&range)).collect();
+            arr
+        }
+        
+        for _ in 0..100 {
+            let mut v = gen_random_vec(10, -10, 10);
+            v.sort();
+            let mut rng = rand::thread_rng();
+            let target_val = v[rng.gen_range(0..10)];
+            let ind = binary_search(&v, target_val);
+            assert_eq!(target_val, v[ind.unwrap()]);
+            // assert_eq!(ind.unwrap(), v.iter().position(|&r| r == target_val).unwrap());
+        }
+    }
+
+
+
+
 }
